@@ -1,0 +1,7 @@
+app_identifier("com.example.kyotee") # TODO: change to your real bundle id
+apple_id("YOUR_APPLE_ID_EMAIL") # e.g., dev@yourcompany.com
+
+# Optional if your account has multiple teams
+# itc_team_id("YOUR_ITC_TEAM_ID")
+# team_id("YOUR_DEV_PORTAL_TEAM_ID")
+

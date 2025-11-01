@@ -1,0 +1,23 @@
+default_platform(:android)
+
+platform :android do
+  desc "Build appbundle and upload to Play internal testing"
+  lane :beta do
+    sh("flutter", "clean")
+    sh("flutter", "pub", "get")
+    sh("flutter", "build", "appbundle", "--release")
+
+    aab = "build/app/outputs/bundle/release/app-release.aab"
+    UI.user_error!("AAB not found at #{aab}") unless File.exist?(aab)
+
+    # Requires Google Play JSON key. Set env GOOGLE_APPLICATION_CREDENTIALS or pass json_key.
+    supply(
+      aab: aab,
+      track: "internal",
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_changelogs: false
+    )
+  end
+end
+

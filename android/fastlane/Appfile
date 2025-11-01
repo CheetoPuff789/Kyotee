@@ -1,0 +1,3 @@
+# Used by supply (Google Play) when not provided inline
+package_name("com.example.kyotee") # TODO: change to your real package name
+

@@ -1,0 +1,26 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Build and upload TestFlight beta via Flutter build"
+  lane :beta do
+    # Prereqs: Xcode signing set to Automatic, valid certs/profiles in Keychain
+    sh("flutter", "clean")
+    sh("flutter", "pub", "get")
+
+    # Build IPA with export options
+    sh("flutter", "build", "ipa", "--release", "--export-options-plist=ios/ExportOptions.plist")
+
+    # Upload to TestFlight. Configure Appfile and FASTLANE_SESSION or App Store Connect API key.
+    ipa_path = Dir["build/ios/ipa/*.ipa"].first
+    UI.user_error!("No IPA found. Did build succeed?") unless ipa_path
+
+    pilot(
+      ipa: ipa_path,
+      distribute_external: true, # set false for internal only
+      groups: ["Beta"], # existing TestFlight group name
+      skip_submission: false,
+      skip_waiting_for_build_processing: false
+    )
+  end
+end
+
